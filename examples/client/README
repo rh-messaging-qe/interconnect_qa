@@ -1,0 +1,2 @@
+Examples of different approaches how to make own simple client(sender/receiver)
+These clients are python2 compatible, to use it with python 3 some simple changes are needed
