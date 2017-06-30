@@ -2,6 +2,11 @@ import pytest
 
 from src.components.topology import Topology
 
+def pytest_addoption(parser):
+    parser.addoption("--in_node", action="store", default="localhost", help="node for ingress connection")
+    parser.addoption("--out_node", action="store", default="localhost", help="node for egress connection")
+    parser.addoption("--sender_node", action="store", default="localhost", help="node where sender is running")
+    parser.addoption("--receiver_node", action="store", default="localhost", help="node where receiver is running")
 
 @pytest.fixture(scope="module", autouse=True)
 def in_node():
