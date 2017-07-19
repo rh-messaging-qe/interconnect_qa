@@ -23,3 +23,10 @@ class Router(Node):
 
     def start(self): # example uf sultan's usage -- RUNNING ONLY ON LOCALHOST
         self.sultan.qdrouterd.run("-c %s -d" % self.configuration_path)
+
+    def stop(self):
+        pass
+
+    def restart(self):
+        self.start()
+        self.stop()
