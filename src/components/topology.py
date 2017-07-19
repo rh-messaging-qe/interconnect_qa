@@ -1,3 +1,4 @@
+# Thos class is probably obsolete
 class Topology(object):
     instance = None
 
