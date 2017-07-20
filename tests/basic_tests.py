@@ -1,7 +1,7 @@
-import pytest
+from proton import Message
 
 from tests import get_func_name
-from proton import Message
+
 
 def test_send_receive(in_node, out_node, sender_node, receiver_node):
     """

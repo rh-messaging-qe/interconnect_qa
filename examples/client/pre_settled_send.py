@@ -19,11 +19,14 @@
 #
 
 from __future__ import print_function, unicode_literals
+
 import optparse
+
 from proton import Message
 from proton.handlers import MessagingHandler
-from proton.reactor import Container, AtLeastOnce
 from proton.reactor import AtMostOnce
+from proton.reactor import Container
+
 
 class Send(MessagingHandler):
     def __init__(self, url, messages):
@@ -37,16 +40,17 @@ class Send(MessagingHandler):
         event.container.create_sender(self.url, options=AtMostOnce())
 
     def on_sendable(self, event):
-      while event.sender.credit and self.sent < self.total:
-        #msg = Message(id=(self.sent+1), body={'sequence':(self.sent+1)}, address="pulp")
-        msg = Message(id=(self.sent+1), body={'sequence':(self.sent+1)}, address="pulp.task")
-        event.sender.send(msg)
-        self.sent += 1
-      if self.sent == self.total:
-        print("all messages sent")
-        event.connection.close()
-        event.container.stop()
-        exit()
+        while event.sender.credit and self.sent < self.total:
+            # msg = Message(id=(self.sent+1), body={'sequence':(self.sent+1)}, address="pulp")
+            msg = Message(id=(self.sent + 1), body={'sequence': (self.sent + 1)}, address="pulp.task")
+            event.sender.send(msg)
+            self.sent += 1
+        if self.sent == self.total:
+            print("all messages sent")
+            event.connection.close()
+            event.container.stop()
+            exit()
+
 
 parser = optparse.OptionParser(usage="usage: %prog [options]",
                                description="Send messages to the supplied address.")
@@ -60,4 +64,5 @@ try:
     container = Container(Send(opts.address, opts.messages))
     container.container_id = 'pre-settled sender'
     container.run()
-except KeyboardInterrupt: pass
+except KeyboardInterrupt:
+    pass

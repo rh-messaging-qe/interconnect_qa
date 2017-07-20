@@ -9,7 +9,6 @@ class Node(object):
     All future representations should inherit from this class.
     """
 
-
     # TODO: restart method
     def __init__(self, hostname="localhost"):
         self.hostname = hostname

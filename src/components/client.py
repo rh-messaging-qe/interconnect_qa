@@ -1,8 +1,7 @@
-from proton import Message
+import threading
+
 from proton.handlers import MessagingHandler
 from proton.reactor import Container
-
-import threading
 
 
 class Timeout(object):
@@ -14,10 +13,11 @@ class Timeout(object):
 
 
 class Client(MessagingHandler):
-    #TODO error handling is not incorporated, this is just a raw idea
+    # TODO error handling is not incorporated, this is just a raw idea
     """
     Client represents an entity in the framework capable of manipulation with messages (sending, receiving, parsing ...)
     """
+
     def __init__(self, blocking=False):
         """
         :param blocking: if client blocks program execution - runs on foreground
@@ -46,11 +46,11 @@ class Client(MessagingHandler):
         Starts client. Client runs on foreground/background according to its configuration during initialization
         :return: None
         """
-        self.thread = threading.Thread(target=self.container.run) # assing a thread
+        self.thread = threading.Thread(target=self.container.run)  # assing a thread
         if self._blocking:
             self.thread.run()
         else:
-            self.thread.start() # invokes separate thread of control
+            self.thread.start()  # invokes separate thread of control
 
     def stop(self):
         self.thread.join(timeout=1)
@@ -60,6 +60,7 @@ class Sender(Client):
     """
     Most basic example client capable of sending messages
     """
+
     def __init__(self, hostname="localhost", address="test_queue", count=1, messages=[], blocking=False):
         """
         :param hostname: hostname of the physical node with router/broker/receiver
@@ -82,17 +83,18 @@ class Sender(Client):
         self.container = None
         self.container = Container(self)
 
-    def on_start(self, event): # event loop starts
+    def on_start(self, event):  # event loop starts
         conn = event.container.connect(self.hostname)
         event.container.create_sender(conn, self.address)
 
-    def on_sendable(self, event): # link has credit and we can transfer messages TODO add link credit checking see dtests
+    def on_sendable(self,
+                    event):  # link has credit and we can transfer messages TODO add link credit checking see dtests
         if event.sender:
             for message in self.messages:
                 counter_per_message = 0
                 if counter_per_message < self.max_messages:
                     event.sender.send(message)
-                    self.message_pool.append(message) # sent messages to the pool
+                    self.message_pool.append(message)  # sent messages to the pool
                     counter_per_message += 1
                 self.counter += 1
             if self.counter == self.max_messages:
@@ -123,19 +125,20 @@ class Receiver(Client):
         self.address = address
         self.container = Container(self)
 
-    def on_reactor_init(self, event): # called when event loop - the reactor - starts
+    def on_reactor_init(self, event):  # called when event loop - the reactor - starts
         super(Receiver, self).on_reactor_init(event)
-        self.timer = event.reactor.schedule(5, Timeout(self)) # schedule timeout -- good for testing purposes to not hang out
+        self.timer = event.reactor.schedule(5, Timeout(
+            self))  # schedule timeout -- good for testing purposes to not hang out
         self.receiver = event.container.create_receiver(self.hostname + "/" + self.address)
         self.receiver.open()
 
-    def timeout(self, event): # TODO error handling is missing
+    def timeout(self, event):  # TODO error handling is missing
         self.error = 1
         if self.receiver is not None:
             self.receiver.close()
         event.container.stop()
 
-    def on_message(self, event): # we got a message
+    def on_message(self, event):  # we got a message
         if event.receiver:
             self.message_pool.append(event.message)
             self.received += 1

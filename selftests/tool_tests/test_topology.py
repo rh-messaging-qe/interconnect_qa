@@ -92,6 +92,7 @@ def test_topology_designer_generate_topologies_router_broker(file, expected):
     designer = TopologyDesigner(filename(file))
     assert designer.topologies == expected
 
+
 product = [
     Topology(routers=('127.0.0.1', '127.0.0.2', '127.0.0.3'), senders=("127.0.0.2",), receivers=("127.0.0.3",)),
     Topology(routers=('127.0.0.1', '127.0.0.3', '127.0.0.2'), senders=("127.0.0.2",), receivers=("127.0.0.3",)),

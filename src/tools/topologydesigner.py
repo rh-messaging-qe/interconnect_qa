@@ -1,6 +1,6 @@
+import collections
 import configparser
 import itertools
-import collections
 
 
 class Topology(object):

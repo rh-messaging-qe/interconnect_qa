@@ -1,7 +1,6 @@
-from src.components import *
-
 from sultan.api import Sultan
 
+from src.components import *
 from src.components.node import Node
 
 
@@ -21,7 +20,7 @@ class Router(Node):
         self.configuration_path = configuration_path
         self.sultan = Sultan()
 
-    def start(self): # example uf sultan's usage -- RUNNING ONLY ON LOCALHOST
+    def start(self):  # example uf sultan's usage -- RUNNING ONLY ON LOCALHOST
         self.sultan.qdrouterd.run("-c %s -d" % self.configuration_path)
 
     def stop(self):

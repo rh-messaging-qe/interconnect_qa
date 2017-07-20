@@ -19,51 +19,55 @@
 #
 
 from __future__ import print_function, unicode_literals
+
 import optparse
+
 from proton import Message
 from proton.handlers import MessagingHandler
-from proton.reactor import Container
 from proton.reactor import AtLeastOnce
+from proton.reactor import Container
+
 
 class Send(MessagingHandler):
     def __init__(self, url, messages):
-      super(Send, self).__init__()
-      self.url = url
-      self.sent = 0
-      self.rejected = 0
-      self.released = 0
-      self.total = messages
-      self.success = False
+        super(Send, self).__init__()
+        self.url = url
+        self.sent = 0
+        self.rejected = 0
+        self.released = 0
+        self.total = messages
+        self.success = False
 
     def on_start(self, event):
         event.container.create_sender(self.url, options=AtLeastOnce())
 
     def on_sendable(self, event):
-      while event.sender.credit and self.sent < self.total:
-          #msg = Message(id=(self.sent+1), body={'sequence':(self.sent+1)})
-          msg = Message(id=(self.sent+1), body={'sequence':(self.sent+1)}, address="multicast")
-          event.sender.send(msg)
-          self.sent += 1
+        while event.sender.credit and self.sent < self.total:
+            # msg = Message(id=(self.sent+1), body={'sequence':(self.sent+1)})
+            msg = Message(id=(self.sent + 1), body={'sequence': (self.sent + 1)}, address="multicast")
+            event.sender.send(msg)
+            self.sent += 1
 
     def on_rejected(self, event):
-      self.rejected += 1
-      if self.rejected == self.total:
-        print("all messages rejected")
-        self.success = True
-        event.connection.close()
+        self.rejected += 1
+        if self.rejected == self.total:
+            print("all messages rejected")
+            self.success = True
+            event.connection.close()
 
     def on_released(self, event):
-      self.released += 1
-      if self.released == self.total:
-        print("all messages released")
-        self.success = True
-        event.connection.close()
+        self.released += 1
+        if self.released == self.total:
+            print("all messages released")
+            self.success = True
+            event.connection.close()
 
     def on_connection_closed(self, event):
-      if self.success:
-        print("Test Succeeded")
-      else:
-        print("Test Failed")
+        if self.success:
+            print("Test Succeeded")
+        else:
+            print("Test Failed")
+
 
 parser = optparse.OptionParser(usage="usage: %prog [options]",
                                description="Send messages to the supplied address.")
@@ -77,4 +81,5 @@ try:
     container = Container(Send(opts.address, opts.messages))
     container.container_id = 'Unsettled Sender'
     container.run()
-except KeyboardInterrupt: pass
+except KeyboardInterrupt:
+    pass
