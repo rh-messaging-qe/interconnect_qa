@@ -1,0 +1,12 @@
+dist: trusty
+language: python
+python:
+- '3.6'
+install: "pip install -r requirements.txt"
+jobs:
+  include:
+  - stage: Self-test topology tool
+    script:
+    - cd selftest/tool_tests
+    - pytest test_topology.py
+    - cd ../..
