@@ -1,4 +1,4 @@
-import pytest as pytest
+import pytest
 
 from src.tools.topologydesigner import TopologyDesigner, Topology
 
