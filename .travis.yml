@@ -7,6 +7,4 @@ jobs:
   include:
   - stage: Self-test topology tool
     script:
-    - cd selftest/tool_tests
-    - pytest test_topology.py
-    - cd ../..
+    - cd $TRAVIS_BUILD_DIR/selftest/tool_tests && pytest test_topology.py && cd $TRAVIS_BUILD_DIR/
