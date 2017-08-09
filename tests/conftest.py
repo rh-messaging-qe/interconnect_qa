@@ -5,10 +5,20 @@ from src.components.router import Router
 
 
 def pytest_addoption(parser):
+    # In node
     parser.addoption("--in_node", action="store", default="localhost", help="node for ingress connection")
+
+    # Out node
     parser.addoption("--out_node", action="store", default="localhost", help="node for egress connection")
+
+    # Sender
     parser.addoption("--sender_node", action="store", default="localhost", help="node where sender is running")
+
+    # Receiver
     parser.addoption("--receiver_node", action="store", default="localhost", help="node where receiver is running")
+
+    # @TODO Inventory
+    # parser.addoption("--inventory", action="store", default="localhost", help="path to inventory file")
 
 
 @pytest.fixture(scope="module", autouse=True)

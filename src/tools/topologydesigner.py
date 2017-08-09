@@ -72,7 +72,8 @@ class TopologyDesigner(object):
         self.permutated_structural = self._get_perm_(self.structural)
         self.topologies = self._generate_topologies()  # list of topologies, from a topology is possible to get in_node out_node etc ...
 
-    def _get_perm_(self, items=[]):  # return all permutations for specific list of items
+    @staticmethod
+    def _get_perm_(items: list):  # return all permutations for specific list of items
         """
         :param items: list of hostnames, ip addresses etc. Necessary for different positions of nodes in the topology
         :return: list if lists
@@ -82,7 +83,8 @@ class TopologyDesigner(object):
             return list(itertools.permutations(items, len(items)))  # iterator is destroyed after the call
         return None
 
-    def __read_file(self, file):
+    @staticmethod
+    def __read_file(file):
         parser = configparser.ConfigParser(
             allow_no_value=True)  # it accepts empty fields (e.g. missing BROKERS section)
         parser.read(file)
@@ -123,7 +125,8 @@ class TopologyDesigner(object):
     def _get_structural(self):
         return self.__get_data_section(self.STRUCTURAL_SECTION)
 
-    def __generate_map(self, product=[], t_map={}):
+    @staticmethod
+    def __generate_map(product: list, t_map: tuple):
         """
         :param product: sequence from cartesian product of different sections data are provided as [[x1,x2], [y1,y2,y3], ...]
         :type product: iterator of lists
