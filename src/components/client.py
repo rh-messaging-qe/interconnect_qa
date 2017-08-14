@@ -20,7 +20,7 @@ class Client(MessagingHandler):
 
     def __init__(self, blocking=False):
         """
-        :param blocking: if client blocks program execution - runs on foreground
+        :param blocking: if clients blocks program execution - runs on foreground
         :type blocking: bool
         """
         super(Client, self).__init__()
@@ -43,7 +43,7 @@ class Client(MessagingHandler):
 
     def run(self):
         """
-        Starts client. Client runs on foreground/background according to its configuration during initialization
+        Starts clients. Client runs on foreground/background according to its configuration during initialization
         :return: None
         """
         self.thread = threading.Thread(target=self.container.run)  # assing a thread
@@ -58,12 +58,12 @@ class Client(MessagingHandler):
 
 class Sender(Client):
     """
-    Most basic example client capable of sending messages
+    Most basic example clients capable of sending messages
     """
 
     def __init__(self, hostname="localhost", address="test_queue", count=1, messages=[], blocking=False):
         """
-        :param hostname: hostname of the physical node with router/broker/receiver
+        :param hostname: hostname of the physical node with routers/brokers/receiver
         :type hostname: str
         :param address: address where to send (queue name, topic name)
         :type address: str
@@ -71,7 +71,7 @@ class Sender(Client):
         :type count: int
         :param messages: pool of messages to send, note count - proton.Message
         :type messages: list
-        :param blocking: if client blocks program execution - runs on foreground
+        :param blocking: if clients blocks program execution - runs on foreground
         :type blocking: bool
         """
         super(Sender, self).__init__(blocking=blocking)
@@ -107,13 +107,13 @@ class Sender(Client):
 class Receiver(Client):
     def __init__(self, hostname="localhost", address="test_queue", expected=1, blocking=True):
         """
-        :param hostname: hostname of the physical node with router/broker/receiver
+        :param hostname: hostname of the physical node with routers/brokers/receiver
         :type hostname: str
         :param address: address where to send (queue name, topic name)
         :type address: str
         :param expected: expected count of messages to receive
         :type expected: int
-        :param blocking: if client blocks program execution - runs on foreground
+        :param blocking: if clients blocks program execution - runs on foreground
         :type blocking: bool
         """
         super(Receiver, self).__init__(blocking=blocking)

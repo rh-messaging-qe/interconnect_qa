@@ -8,8 +8,8 @@ from src.components.node import Node
 
 class Router(Node):
     """
-    Class representing a router on the physical node.
-    This class should contain an API to start, stop, restart router and get basic analytics
+    Class representing a routers on the physical node.
+    This class should contain an API to start, stop, restart routers and get basic analytics
     Note:
         Uses sultan as an example project -- py wrapper around shell -- this could be a pythonic way for further API implementation.
     """

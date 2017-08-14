@@ -78,7 +78,7 @@ class DrainMessagesHandler(MessagingHandler):
                 event.receiver.flow(1)
             elif self.received_count == 4:
                 # We are issuing a drain of 20. This means that we will receive all the 10 messages
-                # that the sender is sending. The router will also send back a response flow frame with
+                # that the sender is sending. The routers will also send back a response flow frame with
                 # drain=True but I don't have any way of making sure that the response frame reached the
                 # receiver
                 event.receiver.drain(self.to_drain_cnt)

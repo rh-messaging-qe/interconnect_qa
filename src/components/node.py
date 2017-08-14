@@ -1,24 +1,12 @@
-from src.components.client import Sender, Receiver, Client
-
-
-class Node(object):
-    """
-    Represents virtual destination/service aka node.
-    In a case of interconnect vm with qdrouterd is represented as a Router node.
-    When there is a sender present on such node, it is a Sender node.
-    All future representations should inherit from this class.
-    """
-
-    # TODO: restart method
-    def __init__(self, hostname="localhost"):
-        self.hostname = hostname
+from src.components.clients import Sender, Receiver, Client
+from src.components.models.node import Node
 
 
 class ClientNode(Node):
     """
-    Contains common API for sender/receiver, aka client, nodes
+    Contains common API for sender/receiver, aka clients, nodes
     Wraps actions from the perspective of the physical node over
-    clients. This means that ClientNode contain client and wraps its interface to
+    clients. This means that ClientNode contain clients and wraps its interface to
     bridge the communication for the user
     """
 
@@ -26,11 +14,11 @@ class ClientNode(Node):
         """
         :param hostname: hostname or ip address of the physical node
         :type hostname: str
-        :param client: client is an entity which is used for sending and receiving messages. Be sure that you are referencing class not instance.
+        :param client: clients is an entity which is used for sending and receiving messages. Be sure that you are referencing class not instance.
         :type client: Client
         """
         super(ClientNode, self).__init__(hostname)
-        self.client_class = client  # client as instance capable of send/receive - e.g. MessagingHandler implementation
+        self.client_class = client  # clients as instance capable of send/receive - e.g. MessagingHandler implementation
         self.client = None
 
     @property
@@ -51,7 +39,7 @@ class BasicSenderNode(ClientNode):
         """
         :param hostname: hostname or ip address of the physical node
         :type hostname: str
-        :param sender: client capable of sending messages
+        :param sender: clients capable of sending messages
         :type sender: Client
         """
         super(BasicSenderNode, self).__init__(hostname, sender)
@@ -81,7 +69,7 @@ class BasicReceiverNode(ClientNode):
         """
         :param hostname: hostname or ip address of the physical node
         :type hostname: str
-        :param receiver: client capable of receiving messages
+        :param receiver: clients capable of receiving messages
         :type receiver: Client
         """
         super(BasicReceiverNode, self).__init__(hostname, receiver)

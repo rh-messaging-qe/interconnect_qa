@@ -1,7 +1,7 @@
 import pytest
 
 from src.components.node import BasicSenderNode, BasicReceiverNode
-from src.components.router import Router
+from src.components.routers import Router
 
 
 def pytest_addoption(parser):
